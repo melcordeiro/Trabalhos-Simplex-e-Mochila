@@ -38,7 +38,7 @@
 		if($i>0 && $i<($tabrows-1))
 		{
 				$p=2;
-				echo"<td align='center'>$i</td><td align='center'> <select name = $i.base>";
+				echo"<td align='center'>$i</td><td align='center'> <select name = 'base$i'>";
 					for($p=2;$p<($tabcolls-1);$p++) 
 					{
 						echo"

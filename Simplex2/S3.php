@@ -13,13 +13,18 @@ function ler_arquivo($file_name)
 $resultado = ler_arquivo($file_name);
 $cabecalio = ler_arquivo($file_colls);
 
-$rows = $resultado['linhas']; echo "LINHAS ".$rows; echo"<br>";
-$colls = $resultado['colunas']; echo "COLUNAS ".$colls; echo "<br><br>";
+$rows = $resultado['linhas'];
+$colls = $resultado['colunas'];
 $c='c';
 $celulas = array();
 $i=0;
 $j=0;
 $menor=-1;
+$maimen;
+
+if(isset($_GET['slctVal'])){	
+		$maimen=$_GET['slctVal'];
+}
 echo "CELULAS"; echo "<br>";
 
 for($i=0,$j=0;$i<$rows-1;)
@@ -40,8 +45,9 @@ for($i=0,$j=0;$i<$rows-1;)
 	}
 }
 if(isset($_GET['iter'])){
-		$iter[$i]=$_GET['iter'];
+		$iter=$_GET['iter'];
 	}
+$cpiter=0;
 
 $base=array();
 for($i=1;$i<=$rows-2;$i++)
@@ -51,7 +57,8 @@ for($i=1;$i<=$rows-2;$i++)
 	}
 }
 $maiorbase=$rows-2;
-for(;$menor<0;)//Repetição
+
+for($cpiter=0;$menor<0&&$cpiter<$iter;$cpiter++)//Repetição
 {
 //identificar o menor valor em Z	
 $collsmenor;
@@ -74,14 +81,10 @@ for($i=$rows-2,$j=0;$j<=$colls-3;$j++)
 	}	
 }
 //identificar o menor valor em Z
-	echo "MENOR ".$menor;
 	if($menor>0)
 		break;
 	
 //o valor da coluna é o que entra na base
-	
-	//echo $cabecalio[$collsmenor+2];
-
 //dividir b pela coluna deste menor em Z
 $mendiv=null;
 $menindex=null;
@@ -106,21 +109,14 @@ for($i=$colls-3,$j=0;$j<$rows-2;$j++)
 		}
 	}	
 }
-echo "<br>";
-//linha de quem sai da base
-//echo $celulas[$menindex][$collsmenor];
 
+//linha de quem sai da base
 //o menor quociente indica a variável que sai da base
 $base[$mt+1]=$cabecalio[$collsmenor+2];
-//echo"<br>";
-
 //pivo = intersecção entre coluna que entra e linha que sai da base
 
 $pivo=$celulas[$mt][$collsmenor];
-echo"PIVO".$pivo; echo"<br>";
-
-//echo"<br>"."celulas a serem divididas pelo pivo"."<br>";
-//Dividir todos os elementos da linha do pivo por ele
+echo"PIVO ".$pivo; echo"<br>";
 for($j=0;$j<$colls-2;$j++)
 {
 	//echo $celulas[$mt][$j]; echo" ";
@@ -128,7 +124,7 @@ for($j=0;$j<$colls-2;$j++)
 }
 
 //deixar nulo os outros elementos da coluna (exceto pivo):
-	//Multiplicar a linha acima por (valor *(-1))[se for a primeira linha, multiplica-se a ultima]
+	//Multiplicar a linha acima por (valor *(-1))
 		//e somar com a linha que se deseja zerar o valor da coluna pivo
 		// repetir para todos os valores não nulos da coluna do pivo
 		//inclusive para o valor da linha Z
@@ -151,27 +147,23 @@ for($i=0,$j=0;$i<$rows-1;$i++)//$j =coluna
 					$celulas[$i][$j]=(($celulas[$mt][$j])*$nuller)+$celulas[$i][$j];
 				else
 					$celulas[$i][$j]=(($celulas[$mt][$j])*$nuller)+($celulas[$i][$j] *(-1));
-				//echo $celulas[$i][$j]; echo " ";
-			}
-			//echo "<br>";
+			}			
 		}		
 	}
 }
-/*echo"<br>";
-for($l=0;$l<$colls;$l++)
-	{
-		echo $cabecalio[$l];
-		echo " ";
-	}*/
-	echo"<br>";
-	
+	echo"<br>BASE<br>";
 	for($k=0;$k<$rows-1;$k++)
 	{
 		if($k<=$maiorbase && $k>0)
 		{
 			echo $base[$k];
 			echo " ";
-		}		
+		}
+	}
+	echo"<br>";
+	for($k=0;$k<$rows-1;$k++)
+	{
+			
 		for($m=0;$m<$colls-2;$m++)
 		{
 			
@@ -182,6 +174,16 @@ for($l=0;$l<$colls;$l++)
 	}
 	echo "<br>";	
 }
+if($cpiter==$iter)
+	echo "<br> Quantidade Máxima de Repetições Atingida";
+echo"<br>"."SOLUÇÃO FINAL"."<br>";
+for($i=1;$i<=$maiorbase;$i++)
+	echo $base[$i]." = ".$celulas[$i-1][$colls-3]."<br>";
+
+	if($maimen=="menor")
+		echo"Z = ".$celulas[$i-1][$colls-3];
+	else
+		echo"Z = ".($celulas[$i-1][$colls-3]*(-1));
 ?>
 
 <!DOCTYPE HTML>

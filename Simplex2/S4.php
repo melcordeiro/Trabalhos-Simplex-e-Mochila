@@ -123,6 +123,7 @@ $nuller=0;
 $savr=0;
 $savc=0;
 
+echo '<table><tr><td colspacing="5">TITULO DA TABELA</td></tr>';
 for($i=0,$j=0;$i<$rows-1;$i++)//$j =coluna
 {
 	if($celulas[$i][$collsmenor]!=0)	
@@ -131,19 +132,19 @@ for($i=0,$j=0;$i<$rows-1;$i++)//$j =coluna
 		{
 			$nuller=($celulas[$i][$collsmenor]*(-1));
 			$savr=$i; $savc=$collsmenor;
-			
+			echo "<tr>";
 			for($b=0;$b<=$colls-3;$b++)
 			{
 				$nuller=(($nuller*$celulas[$menindex][$b])+$celulas[$savr][$savc]);
 				$celulas[$savr][$savc]=$nuller;
-				echo $celulas[$savr][$savc]; echo ' ';
+				echo '<td>'+$celulas[$savr][$savc]+'</td>';
 				$savr++;
 			}
-			echo "<br>";
+			echo "</tr>";
 		}		
 	}
 }
-
+echo '</table>';
 
 ?>
 

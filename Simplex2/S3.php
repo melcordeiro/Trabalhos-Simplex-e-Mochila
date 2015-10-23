@@ -26,6 +26,7 @@ if(isset($_GET['slctVal'])){
 		$maimen=$_GET['slctVal'];
 }
 echo "CELULAS"; echo "<br>";
+echo '<table><tr><td colspacing="$colls">CELULAS</td></tr>';
 
 for($i=0,$j=0;$i<$rows-1;)
 {
@@ -81,12 +82,12 @@ for($i=$rows-2,$j=0;$j<=$colls-3;$j++)
 	}	
 }
 //identificar o menor valor em Z
-	if($menor>0)
+	if($menor>=0)
 		break;
 	
 //o valor da coluna é o que entra na base
 //dividir b pela coluna deste menor em Z
-$mendiv=null;
+$mendiv=0;
 $menindex=null;
 $mt=null;
 for($i=$colls-3,$j=0;$j<$rows-2;$j++)
@@ -95,13 +96,16 @@ for($i=$colls-3,$j=0;$j<$rows-2;$j++)
 	{
 		if ($mendiv==null)
 		{
-			$mendiv=($celulas[$j][$i])/($celulas[$j][$collsmenor]);
-			$menindex=$j;
-			if($celulas[$j][$collsmenor]>=0)			
-				$mt=$j;
+			if(($celulas[$j][$i])/($celulas[$j][$collsmenor])>0){
+				$mendiv=($celulas[$j][$i])/($celulas[$j][$collsmenor]);
+				$menindex=$j;
+				if($celulas[$j][$collsmenor]>=0)			
+					$mt=$j;
+			}
 		}
-		elseif(($celulas[$j][$i])/($celulas[$j][$collsmenor])< $mendiv)
+		elseif(($celulas[$j][$i])/($celulas[$j][$collsmenor]) < $mendiv)
 		{
+
 			$mendiv=($celulas[$j][$i])/($celulas[$j][$collsmenor]);
 			$menindex=$j;
 			if($celulas[$j][$collsmenor]>=0)			

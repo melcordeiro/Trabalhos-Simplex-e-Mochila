@@ -26,7 +26,6 @@ if(isset($_GET['slctVal'])){
 		$maimen=$_GET['slctVal'];
 }
 echo "CELULAS"; echo "<br>";
-echo '<table><tr><td colspacing="$colls">CELULAS</td></tr>';
 
 for($i=0,$j=0;$i<$rows-1;)
 {
@@ -99,7 +98,7 @@ for($i=$colls-3,$j=0;$j<$rows-2;$j++)
 			if(($celulas[$j][$i])/($celulas[$j][$collsmenor])>0){
 				$mendiv=($celulas[$j][$i])/($celulas[$j][$collsmenor]);
 				$menindex=$j;
-				if($celulas[$j][$collsmenor]>=0)			
+				if($celulas[$j][$collsmenor]>0)			
 					$mt=$j;
 			}
 		}
@@ -108,24 +107,27 @@ for($i=$colls-3,$j=0;$j<$rows-2;$j++)
 
 			$mendiv=($celulas[$j][$i])/($celulas[$j][$collsmenor]);
 			$menindex=$j;
-			if($celulas[$j][$collsmenor]>=0)			
+			if($celulas[$j][$collsmenor]>0)			
 				$mt=$j;			
 		}
 	}	
 }
-
+if($mt==null && $cpiter>0)
+	break;
 //linha de quem sai da base
 //o menor quociente indica a variável que sai da base
 $base[$mt+1]=$cabecalio[$collsmenor+2];
 //pivo = intersecção entre coluna que entra e linha que sai da base
+	$pivo=$celulas[$mt][$collsmenor];
 
-$pivo=$celulas[$mt][$collsmenor];
+
 echo"PIVO ".$pivo; echo"<br>";
-for($j=0;$j<$colls-2;$j++)
-{
-	//echo $celulas[$mt][$j]; echo" ";
-	$celulas[$mt][$j]=($celulas[$mt][$j]/$pivo);	
-}
+
+	for($j=0;$j<$colls-2;$j++)
+	{
+		//echo $celulas[$mt][$j]; echo" ";
+		$celulas[$mt][$j]=round(($celulas[$mt][$j]/$pivo),3);	
+	}
 
 //deixar nulo os outros elementos da coluna (exceto pivo):
 	//Multiplicar a linha acima por (valor *(-1))
@@ -155,6 +157,7 @@ for($i=0,$j=0;$i<$rows-1;$i++)//$j =coluna
 		}		
 	}
 }
+
 	echo"<br>BASE<br>";
 	for($k=0;$k<$rows-1;$k++)
 	{

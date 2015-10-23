@@ -12,7 +12,6 @@ function ler_arquivo($file_name)
 }
 $resultado = ler_arquivo($file_name);
 $cabecalio = ler_arquivo($file_colls);
-
 $rows = $resultado['linhas'];
 $colls = $resultado['colunas'];
 $c='c';
@@ -21,6 +20,9 @@ $i=0;
 $j=0;
 $menor=-1;
 $maimen;
+
+//for($o=0;$o<$colls;$o++)
+	//	echo $cabecalio[$o]." ";
 
 if(isset($_GET['slctVal'])){	
 		$maimen=$_GET['slctVal'];
@@ -112,8 +114,11 @@ for($i=$colls-3,$j=0;$j<$rows-2;$j++)
 		}
 	}	
 }
-if($mt==null && $cpiter>0)
+if($mt==null && $cpiter>2)
+{	
+	echo"<br>";echo"Solução Indeterminada"; echo"<br>";
 	break;
+}
 //linha de quem sai da base
 //o menor quociente indica a variável que sai da base
 $base[$mt+1]=$cabecalio[$collsmenor+2];

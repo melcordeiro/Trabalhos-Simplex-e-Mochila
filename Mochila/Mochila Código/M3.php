@@ -59,22 +59,43 @@ sort($sorter);
 
 $auxi=0;
 $auxj=0;
-/*for($i=0;$i<$sindex;$i++)
-{
-	echo $sorter[$i]."  "; 
-}*/
+
 //echo "<br><br>Organizando por ordem crescente de peso<br>";
 $celaux= array();
 $sortaux=0;
 $bre=false;
-
+//arrumar backtracking para maior valor em peso repetido ir para baixo;
+$auxname;
+$auxpeso;
+$auxval;
 for($i=0;$i<$rows-1;$i++)
 {
-	for($j=0;$j<$colls-1;$j++)
+	$j=1;
+
+	for($j=1;$j<$colls-1;$j++)
 	{
 		
 		if($celulas[$i][$j]==$sorter[$sortaux])
 		{	
+			//Se houver o mesmo peso mas o valor for menor, o mais valioso deve ir pra baixo;
+			if($auxi>0 and ($celulas[$i][$j]==$celaux[$auxi-1][$auxj+1]) and ($celulas[$i][$j+1]<$celaux[$auxi-1][$auxj+2]))
+			{
+				//salvando dados do reg anterior
+				$auxname=$celaux[$auxi-1][$auxj];
+				$auxpeso=$celaux[$auxi-1][$auxj+1];
+				$auxval=$celaux[$auxi-1][$auxj+2];
+				
+				//Reg anterior recebe o atual (de menor valor )
+				$celaux[$auxi-1][$auxj]=$celulas[$i][$j-1];
+				$celaux[$auxi-1][$auxj+1]=$celulas[$i][$j];
+				$celaux[$auxi-1][$auxj+2]=$celulas[$i][$j+1];
+				
+				//Reg atual recebe valores do reg atnerior (de maior valor)
+				$celulas[$i][$j-1]=$auxname;
+				$celulas[$i][$j]=$auxpeso;
+				$celulas[$i][$j+1]=$auxval;
+				
+			}	
 			
 			$celaux[$auxi][$auxj]=$celulas[$i][$j-1];
 			//echo $celaux[$auxi][$auxj]."  ";
@@ -83,6 +104,7 @@ for($i=0;$i<$rows-1;$i++)
 			$celaux[$auxi][$auxj+2]=$celulas[$i][$j+1];
 			//echo $celaux[$auxi][$auxj+2]."  ";
 			$auxi++;$auxj=0;
+			$celulas[$i][$j]=null;
 			$sortaux++;
 			$i=0;
 			$j=0;
@@ -95,6 +117,7 @@ for($i=0;$i<$rows-1;$i++)
 		echo"<br>";
 		}
 	}
+
 	if($bre==true)
 		break;
 }
@@ -106,8 +129,7 @@ for($i=0;$i<=$maxw;$i++)
 	$o[$i]=$i;
 }
 $mochila= array();
-$auxzero=array();
-//$mochila[0][0]=0;$mochila[0][1]=0;$mochila[0][2]=0;
+
 echo"<form name='tab1' method='GET' action='S3.php' align='center'>
 			<table border='1' align='center' ";
 	
@@ -164,18 +186,33 @@ $i--;
 $l--;
 $somapeso=0;
 $somavalor=0;
+$savei=$i;
+$savel=$l;
+
+//busca o maior valor para começar o backtracking
+$maiorvalor=0;
 
 for($l,$i;$i>=0;$i--)
 {
-	if(($i==0 and $mochila[$i][$l]!=0) or ($i>0 and $mochila[$i][$l]!=$mochila[$i-1][$l]))
+	if($mochila[$i][$l]>$maiorvalor)
 	{
-		echo $celaux[$i][0]."<br>";
-		$somapeso+= $celaux[$i][1];
-		$somavalor+=$celaux[$i][2];
-		$l=$sorter[$i]-$l;
-		if($l<0)
-			$l*=-1;
-		if($i==0)
+		$maiorvalor=$mochila[$i][$l];
+		$savei=$i; $savel=$l;
+	}
+}
+
+
+for($savel,$savei;$savei>=0;$savei--)
+{
+	if(($savei==0 and $mochila[$savei][$savel]!=0) or ($savei>0 and $mochila[$savei][$savel]!=$mochila[$savei-1][$savel]))
+	{
+		echo $celaux[$savei][0]."<br>";
+		$somapeso+= $celaux[$savei][1];
+		$somavalor+=$celaux[$savei][2];
+		$savel=$sorter[$savei]-$savel;
+		if($savel<0)
+			$savel*=-1;
+		if($savei==0)
 			break;
 		
 	}	
@@ -183,9 +220,6 @@ for($l,$i;$i>=0;$i--)
 echo"<br>";
 echo"PESO TOTAL = ".$somapeso."<br>";
 echo"VALOR TOTAL = ".$somavalor;
-
-
-
 ?>
 
 <!DOCTYPE HTML>

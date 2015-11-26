@@ -1,0 +1,2 @@
+http://localhost/Simplex2/S2.php?vars=2&rests=3&enviar=Enviar
+http://localhost/Simplex2/S3.php?1.base=f1&c00=1&c01=0&c02=1&c03=0&c04=0&c05=4&2.base=f2&c10=0&c11=1&c12=0&c13=1&c14=0&c15=6&3.base=f3&c20=3&c21=2&c22=0&c23=0&c24=1&c25=18&c30=-3&c31=-5&c32=0&c33=0&c34=0&c35=0&slctVal=menor&iter=10&simplex=Calcular

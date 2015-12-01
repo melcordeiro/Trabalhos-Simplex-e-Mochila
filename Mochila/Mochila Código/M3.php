@@ -147,7 +147,15 @@ for($i=-1;$i<$rows-1;$i++)
 		{
 			if($sorter[$i]>$o[$l])
 			{
-				if($i>0)
+				if($i>1)
+				{
+					if($mochila[$i-2][$l]>$mochila[$i-1][$l])
+						$mochila[$i][$l]=$mochila[$i-2][$l];
+					else
+						$mochila[$i][$l]=$mochila[$i-1][$l];
+				}
+				else
+				if($i==1)
 					$mochila[$i][$l]=$mochila[$i-1][$l];
 				else
 					$mochila[$i][$l]=0;
@@ -155,7 +163,10 @@ for($i=-1;$i<$rows-1;$i++)
 			else
 			{
 				if($i>0)
-					$mochila[$i][$l]=$celaux[$i][2] + ($mochila[$i-1][ $o[$l]-$sorter[$i]] );
+					if( ($mochila[$i][$l]=$celaux[$i][2] + ($mochila[$i-1][ $o[$l]-$sorter[$i]]))>  $mochila[$i-1][$l])
+						$mochila[$i][$l]=$celaux[$i][2] + ($mochila[$i-1][ $o[$l]-$sorter[$i]] );
+					else
+						$mochila[$i][$l]=$mochila[$i-1][$l];
 				else
 					$mochila[$i][$l]=$celaux[$i][2];
 			}
